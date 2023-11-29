@@ -1,2 +1,2 @@
 ${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-resources.sh
-${PODS_ROOT}/../../DebugView/build/compose/ios/DebugView/compose-resources
+${PODS_ROOT}/../../debug-view/build/compose/ios/DebugView/compose-resources
