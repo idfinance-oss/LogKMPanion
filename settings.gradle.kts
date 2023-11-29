@@ -19,4 +19,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "DebugView"
 include(":app")
-include(":presentation")
+include(":DebugView")

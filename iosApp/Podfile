@@ -1,0 +1,8 @@
+platform :ios, '12.0'
+
+target 'iosApp' do
+  use_frameworks!
+
+  pod 'DebugView', :path => '../DebugView'
+
+end

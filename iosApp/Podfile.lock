@@ -1,0 +1,16 @@
+PODS:
+  - DebugView (0.0.9)
+
+DEPENDENCIES:
+  - DebugView (from `../DebugView`)
+
+EXTERNAL SOURCES:
+  DebugView:
+    :path: "../DebugView"
+
+SPEC CHECKSUMS:
+  DebugView: 7698403304bfd0f7d1faabdd5e4b078ca86703a8
+
+PODFILE CHECKSUM: 6120661d24afc40824a2c82e53d0898b6692fda9
+
+COCOAPODS: 1.13.0
