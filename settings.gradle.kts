@@ -6,7 +6,7 @@ pluginManagement {
     }
 
     plugins {
-        id("org.jetbrains.compose").version("1.5.3")
+        id("org.jetbrains.compose").version("1.5.11")
     }
 }
 dependencyResolutionManagement {
