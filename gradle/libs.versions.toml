@@ -1,4 +1,5 @@
 [versions]
+pluginVersion = "1.0.0"
 agp = "8.1.2"
 decomposeCompose = "2.1.2-compose-experimental"
 decompose = "2.1.2"

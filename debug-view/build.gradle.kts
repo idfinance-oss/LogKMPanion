@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.idfinance.kmm"
-version = "1.0.0"
+version = System.getenv("LIBRARY_VERSION") ?: libs.versions.pluginVersion.get()
 
 kotlin {
     androidTarget { publishLibraryVariants("release", "debug") }
