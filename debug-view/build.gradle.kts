@@ -12,8 +12,10 @@ version = System.getenv("LIBRARY_VERSION") ?: libs.versions.pluginVersion.get()
 
 kotlin {
     androidTarget { publishLibraryVariants("release", "debug") }
-    ios()
+    iosX64()
+    iosArm64()
     iosSimulatorArm64()
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         val commonMain by getting {
