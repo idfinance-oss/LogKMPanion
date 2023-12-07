@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "labels": [
+    "Dependency Update"
+  ],
+  "reviewers": [
+    "sergei-mikhailovskii-idf",
+    "viktor-savchik-idf",
+    "egor-slatvinskiy-idf"
+  ],
+  "extends": [
+    "config:base"
+  ],
+  "dependencyDashboard": true,
+  "prHourlyLimit": 5,
+  "vulnerabilityAlerts": {
+    "addLabels": [
+      "Security"
+    ]
+  },
+  "commitMessageAction": "update:"
+}
