@@ -1,7 +1,7 @@
 [versions]
 pluginVersion = "1.0.0"
 agp = "8.1.2"
-decomposeCompose = "2.1.2-compose-experimental"
+decomposeCompose = "2.2.0-compose-experimental"
 decompose = "2.2.0"
 realm = "1.11.0"
 org-jetbrains-kotlin-android = "1.9.21"
