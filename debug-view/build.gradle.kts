@@ -3,7 +3,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("org.jetbrains.compose")
-    id("io.realm.kotlin") version "1.11.0"
+    id("io.realm.kotlin") version "1.13.0"
     id("maven-publish")
 }
 
@@ -16,6 +16,8 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
     applyDefaultHierarchyTemplate()
+
+    jvmToolchain(17)
 
     sourceSets {
         val commonMain by getting {
