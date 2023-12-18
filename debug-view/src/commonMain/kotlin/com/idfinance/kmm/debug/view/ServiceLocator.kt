@@ -15,8 +15,8 @@ internal object ServiceLocator {
     val saveLogUseCase: SaveLogUseCase
         get() = SaveLogUseCase(repository)
 
-    fun getRootComponent(context: ComponentContext) =
-        DefaultDebugComponent(context, getLogsFlowUseCase, clearLogsUseCase)
+    fun getRootComponent(context: ComponentContext, onClose: () -> Unit) =
+        DefaultDebugComponent(context, getLogsFlowUseCase, clearLogsUseCase, onClose)
 
     private val getLogsFlowUseCase: GetLogsFlowUseCase
         get() = GetLogsFlowUseCase(repository)

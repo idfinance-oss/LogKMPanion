@@ -22,7 +22,7 @@ class DebugViewActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val root = ServiceLocator.getRootComponent(defaultComponentContext())
+        val root = ServiceLocator.getRootComponent(defaultComponentContext(), this::finish)
         setContent {
             LogView(root)
         }

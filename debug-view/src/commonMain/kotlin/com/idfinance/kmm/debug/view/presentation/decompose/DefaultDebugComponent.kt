@@ -17,6 +17,7 @@ internal class DefaultDebugComponent(
     context: ComponentContext,
     getLogsFlowUseCase: GetLogsFlowUseCase,
     private val clearLogsUseCase: ClearLogsUseCase,
+    private val onClose: () -> Unit,
 ) : DebugComponent,
     ComponentContext by context,
     CoroutineScope by context.disposableScope() {
@@ -41,5 +42,9 @@ internal class DefaultDebugComponent(
 
     override fun clearLogs() {
         launch { clearLogsUseCase() }
+    }
+
+    override fun close() {
+        onClose()
     }
 }

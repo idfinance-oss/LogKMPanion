@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Divider
@@ -52,6 +53,9 @@ internal fun LogView(component: DebugComponent) {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
+                        FloatingActionButton(onClick = component::close) {
+                            Image(Icons.Default.ArrowBack, null)
+                        }
                         FloatingActionButton(onClick = component::clearLogs) {
                             Image(Icons.Default.Delete, null)
                         }

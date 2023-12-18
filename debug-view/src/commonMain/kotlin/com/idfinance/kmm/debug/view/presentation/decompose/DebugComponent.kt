@@ -13,6 +13,7 @@ internal interface DebugComponent {
      *
      */
     fun clearLogs()
+    fun close()
 
     /**
      *
