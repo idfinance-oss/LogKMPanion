@@ -9,10 +9,11 @@ group = "com.idfinance.kmm"
 version = System.getenv("LIBRARY_VERSION") ?: libs.versions.pluginVersion.get()
 
 kotlin {
-    androidTarget()
+    androidTarget { publishLibraryVariants("release", "debug") }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    applyDefaultHierarchyTemplate()
 
     jvmToolchain(17)
 
