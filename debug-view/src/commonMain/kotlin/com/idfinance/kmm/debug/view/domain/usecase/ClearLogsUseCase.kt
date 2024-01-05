@@ -6,5 +6,5 @@ internal class ClearLogsUseCase(
     private val repository: LogRepository,
 ) {
 
-    suspend operator fun invoke() = repository.clearLogs()
+    suspend operator fun invoke() = repository.clearAllLogs()
 }

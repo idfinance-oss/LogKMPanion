@@ -6,8 +6,10 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.start
 import com.arkivanov.essenty.lifecycle.stop
 import com.idfinance.kmm.debug.view.ServiceLocator
-import com.idfinance.kmm.debug.view.presentation.decompose.DebugComponent
-import com.idfinance.kmm.debug.view.presentation.ui.LogView
+import com.idfinance.kmm.debug.view.domain.LogType
+import com.idfinance.kmm.debug.view.domain.handleLog
+import com.idfinance.kmm.debug.view.presentation.ui.root.RootComponent
+import com.idfinance.kmm.debug.view.presentation.ui.root.RootView
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ExportObjCClass
@@ -17,8 +19,8 @@ import platform.UIKit.didMoveToParentViewController
 import platform.UIKit.willMoveToParentViewController
 
 @Suppress("FunctionName")
-private fun DebugViewViewController(component: DebugComponent) = ComposeUIViewController {
-    LogView(component)
+private fun DebugViewViewController(component: RootComponent) = ComposeUIViewController {
+    RootView(component)
 }
 
 @Deprecated("Use DebugViewViewController() directly")
@@ -35,6 +37,10 @@ class DebugViewViewController(onClose: () -> Unit) : UIViewController(null, null
     private val lifecycle = LifecycleRegistry()
     private val component = ServiceLocator.getRootComponent(DefaultComponentContext(lifecycle), onClose)
     private val controller = DebugViewViewController(component)
+
+    init {
+        repeat(100) { handleLog(LogType.DEFAULT, "TAG", "message$it") }
+    }
 
     override fun viewDidLoad() {
         super.viewDidLoad()

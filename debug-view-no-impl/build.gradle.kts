@@ -17,6 +17,14 @@ kotlin {
 
     jvmToolchain(17)
 
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.core)
+            }
+        }
+    }
+
     cocoapods {
         summary = "Debug View No Impl"
         ios.deploymentTarget = "12.0"

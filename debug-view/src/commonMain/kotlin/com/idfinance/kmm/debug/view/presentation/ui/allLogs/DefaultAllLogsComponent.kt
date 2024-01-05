@@ -1,4 +1,4 @@
-package com.idfinance.kmm.debug.view.presentation.decompose
+package com.idfinance.kmm.debug.view.presentation.ui.allLogs
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
@@ -6,27 +6,26 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.doOnStart
 import com.arkivanov.essenty.lifecycle.doOnStop
 import com.idfinance.kmm.debug.view.domain.usecase.ClearLogsUseCase
-import com.idfinance.kmm.debug.view.domain.usecase.GetLogsFlowUseCase
+import com.idfinance.kmm.debug.view.domain.usecase.GetAllLogsFlowUseCase
 import com.idfinance.kmm.debug.view.presentation.extensions.disposableScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-internal class DefaultDebugComponent(
+internal class DefaultAllLogsComponent(
     context: ComponentContext,
-    getLogsFlowUseCase: GetLogsFlowUseCase,
-    private val clearLogsUseCase: ClearLogsUseCase,
-    private val onClose: () -> Unit,
-) : DebugComponent,
+    getAllLogsFlowUseCase: GetAllLogsFlowUseCase,
+    private val clearLogsUseCase: ClearLogsUseCase
+) : AllLogsComponent,
     ComponentContext by context,
     CoroutineScope by context.disposableScope() {
 
-    private val _model = MutableValue(DebugComponent.Model())
-    override val model: Value<DebugComponent.Model> = _model
+    private val _model = MutableValue(AllLogsComponent.Model())
+    override val model: Value<AllLogsComponent.Model> = _model
 
     init {
-        val logsFlow = getLogsFlowUseCase()
+        val logsFlow = getAllLogsFlowUseCase()
         var logsFlowJob: Job? = null
         lifecycle.doOnStart {
             logsFlowJob = launch {
@@ -42,9 +41,5 @@ internal class DefaultDebugComponent(
 
     override fun clearLogs() {
         launch { clearLogsUseCase() }
-    }
-
-    override fun close() {
-        onClose()
     }
 }

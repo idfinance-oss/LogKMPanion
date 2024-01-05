@@ -25,6 +25,14 @@ fun handleLog(type: LogType, tag: String, message: String)
   ```Swift
   class DebugViewViewController(onClose: () -> Unit) : UIViewController(null, null)
   ```
+  
+4) To display api calls:
+
+    Add plugin to Ktor:
+  
+    ```Kotlin
+    debugViewNetworkPlugin(sessionId: String = uuid4().toString()) //sessionId argument should be passed in case you have multiple http clients
+    ```
 
 ## How to integrate the library only for debug builds?
 

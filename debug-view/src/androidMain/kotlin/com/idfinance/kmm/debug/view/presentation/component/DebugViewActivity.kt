@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.arkivanov.decompose.defaultComponentContext
 import com.idfinance.kmm.debug.view.ServiceLocator
-import com.idfinance.kmm.debug.view.presentation.ui.LogView
+import com.idfinance.kmm.debug.view.presentation.ui.root.RootView
 
 fun openDebugView(context: Context) {
     context.startActivity(
@@ -24,7 +24,7 @@ class DebugViewActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val root = ServiceLocator.getRootComponent(defaultComponentContext(), this::finish)
         setContent {
-            LogView(root)
+            RootView(root)
         }
     }
 }

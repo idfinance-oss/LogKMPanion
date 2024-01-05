@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.compose")
     id("io.realm.kotlin") version "1.13.0"
     id("maven-publish")
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
 group = "com.idfinance.kmm"
@@ -29,6 +30,8 @@ kotlin {
                 implementation(libs.decomposeCompose)
                 implementation(libs.decompose)
                 implementation(libs.datetime)
+                implementation(libs.ktor.client.core)
+                implementation(libs.uuid)
             }
         }
         val androidMain by getting {
