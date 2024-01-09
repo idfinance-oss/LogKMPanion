@@ -8,6 +8,7 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.charset
 import io.ktor.http.content.OutgoingContent
+import io.ktor.http.contentType
 import io.ktor.http.cookies
 import io.ktor.util.AttributeKey
 import io.ktor.util.copyToBoth
@@ -80,7 +81,7 @@ internal suspend fun OutgoingContent.observe(log: ByteWriteChannel): OutgoingCon
 
 @OptIn(DelicateCoroutinesApi::class)
 @Suppress("DEPRECATION")
-internal suspend fun logRequest(sessionId: String, request: HttpRequestBuilder): OutgoingContent {
+internal suspend fun logRequest(sessionId: String, request: HttpRequestBuilder) {
     val content = request.body as OutgoingContent
 
     val url = request.url.toString()
@@ -89,19 +90,24 @@ internal suspend fun logRequest(sessionId: String, request: HttpRequestBuilder):
     val headers = request.headers.entries().map { "${it.key}=${it.value.joinToString()}" }
     val cookies = request.cookies().map(Cookie::toString)
 
-    val bodyLog = StringBuilder()
 
-    val charset = content.contentType?.charset() ?: Charsets.UTF_8
+    if (request.contentType() == ContentType.Application.Json) {
+        val bodyLog = StringBuilder()
 
-    val channel = ByteChannel()
-    GlobalScope.launch(Dispatchers.Unconfined) {
-        val text = channel.tryReadText(charset) ?: "[request body omitted]"
-        bodyLog.appendLine(text)
-    }.invokeOnCompletion {
-        handleRequest(sessionId, requestId, url, method, headers, cookies, bodyLog.toString())
+        val charset = content.contentType?.charset() ?: Charsets.UTF_8
+
+        val channel = ByteChannel()
+        GlobalScope.launch(Dispatchers.Unconfined) {
+            val text = channel.tryReadText(charset) ?: "[request body omitted]"
+            bodyLog.appendLine(text)
+        }.invokeOnCompletion {
+            handleRequest(sessionId, requestId, url, method, headers, cookies, bodyLog.toString())
+        }
+
+        content.observe(channel)
+    } else {
+        handleRequest(sessionId, requestId, url, method, headers, cookies, "[request body omitted]")
     }
-
-    return content.observe(channel)
 }
 
 internal suspend inline fun ByteReadChannel.tryReadText(charset: Charset): String? = runCatching {

@@ -6,6 +6,7 @@ import com.idfinance.kmm.debug.view.domain.handleResponse
 import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.observer.ResponseHandler
 import io.ktor.client.plugins.observer.ResponseObserver
+import io.ktor.client.request.HttpSendPipeline
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
 import io.ktor.util.AttributeKey
@@ -17,14 +18,14 @@ internal val requestStartKey = AttributeKey<Long>("RequestStart")
 private fun getRequestId() = uuid4().toString()
 
 fun debugViewNetworkPlugin(sessionId: String = uuid4().toString()) = createClientPlugin("DebugViewNetworkPlugin") {
-    on(SendHook) { request ->
+    client.sendPipeline.intercept(HttpSendPipeline.Monitoring) {
         val requestId = getRequestId()
-        request.attributes.put(requestIdKey, requestId)
-        request.attributes.put(requestStartKey, getTimeMillis())
-        val loggedRequest = runCatching { logRequest(sessionId, request) }.getOrNull()
+        context.attributes.put(requestIdKey, requestId)
+        context.attributes.put(requestStartKey, getTimeMillis())
+        logRequest(sessionId, context)
 
         try {
-            proceedWith(loggedRequest ?: request.body)
+            proceed()
         } catch (it: Throwable) {
             handleError(requestId, it.message)
             throw it
