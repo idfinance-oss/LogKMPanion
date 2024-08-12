@@ -8,3 +8,6 @@
 local.properties
 /.idea/
 */build
+.kotlin
+**/Pods
+**/Podfile.lock

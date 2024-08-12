@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.lifecycle.lifecycleScope
-import com.idfinance.kmm.debug.view.data.network.debugViewNetworkPlugin
-import com.idfinance.kmm.debug.view.domain.LogType
-import com.idfinance.kmm.debug.view.domain.handleLog
-import com.idfinance.kmm.debug.view.presentation.component.openDebugView
+import com.idfinance.logkmpanion.data.network.debugViewNetworkPlugin
+import com.idfinance.logkmpanion.domain.LogType
+import com.idfinance.logkmpanion.domain.handleLog
+import com.idfinance.logkmpanion.presentation.component.openLogKMPanion
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
             Column {
                 Button(onClick = {
                     repeat(100) { handleLog(LogType.DEFAULT, "TAG", "message$it") }
-                    openDebugView(applicationContext)
+                    openLogKMPanion(applicationContext)
                 }) {
                     Text("Open debug view")
                 }

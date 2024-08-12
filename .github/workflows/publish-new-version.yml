@@ -7,11 +7,15 @@ jobs:
   build_project:
     runs-on: macos-latest
     env:
-      GITHUB_USER: ${{ secrets.USER }}
+      ORG_GRADLE_PROJECT_mavenCentralUsername: ${{secrets.SONATYPE_NEXUS_USERNAME}}
+      ORG_GRADLE_PROJECT_mavenCentralPassword: ${{secrets.SONATYPE_NEXUS_PASSWORD}}
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{secrets.SIGNING_SECRET_KEY_RING}}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{secrets.SIGNING_KEY_ID}}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{secrets.SIGNING_PASSWORD}}
       GITHUB_API_KEY: ${{ secrets.PAT }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.7
         with:
           fetch-tags: true
           fetch-depth: 0
@@ -28,11 +32,15 @@ jobs:
           major=$(echo $VERSION | cut -d'.' -f1)
           minor=$(echo $VERSION | cut -d'.' -f2)
           fix=$(echo $VERSION | cut -d'.' -f3)
-          echo "LIBRARY_VERSION=$major.$minor.$(($fix + 1))" >> "$GITHUB_ENV"
-
-      - name: Build and publish
-        run: |
-          echo ${{ env.LIBRARY_VERSION }}
+          if [[ "${{ github.event.head_commit.message }}" == *"[Major]"* ]]
+          then
+            echo "LIBRARY_VERSION=$(($major + 1)).0.0" >> "$GITHUB_ENV"
+          elif [[ "${{ github.event.head_commit.author.name }}" == "renovate[bot]" ]]
+          then
+            echo "LIBRARY_VERSION=$major.$minor.$(($fix + 1))" >> "$GITHUB_ENV"
+          else
+            echo "LIBRARY_VERSION=$major.$(($minor + 1)).0" >> "$GITHUB_ENV"
+          fi
 
       - name: Build and publish
         run: |

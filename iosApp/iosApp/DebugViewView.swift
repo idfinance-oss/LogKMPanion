@@ -12,7 +12,7 @@ struct DebugViewView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
 
     func makeUIViewController(context: Context) -> UIViewController {
-        return DebugViewManager.shared.getDebugViewViewController()
+        DebugViewViewControllerKt.DebugViewViewControllerProvider {}
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {

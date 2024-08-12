@@ -4,12 +4,9 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
-
-    plugins {
-        id("org.jetbrains.compose").version("1.5.11")
-    }
 }
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositories {
         google()
         mavenCentral()
@@ -17,4 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "DebugView"
-include(":app", ":debug-view", ":debug-view-no-impl")
+include(":app", ":logkmpanion", ":logkmpanion-no-impl")

@@ -1,23 +1,24 @@
 [versions]
-pluginVersion = "1.0.0"
-agp = "8.2.0"
-decomposeCompose = "2.2.0-compose-experimental"
-decompose = "2.2.0"
-realm = "1.13.0"
-kotlin = "1.9.21"
-core-ktx = "1.12.0"
-lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.8.2"
-compose-bom = "2023.10.01"
-datetime = "0.5.0"
-ktor = "2.3.7"
-uuid = "0.8.2"
+pluginVersion = "1.0.0-test"
+agp = "8.4.1"
+decompose = "3.0.0"
+realm = "2.1.0"
+kotlin = "2.0.10"
+core-ktx = "1.13.1"
+lifecycle-runtime-ktx = "2.8.4"
+activity-compose = "1.9.1"
+compose-bom = "2024.06.00"
+datetime = "0.6.0"
+ktor = "2.3.12"
+uuid = "0.8.4"
+jetbrains-compose = "1.6.11"
+maven-publish = "0.29.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
-decomposeCompose = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decomposeCompose" }
+decomposeCompose = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 realm = { module = "io.realm.kotlin:library-base", version.ref = "realm" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -31,8 +32,13 @@ ktorClientHttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 
 [plugins]
+com-android-library = { id = "com.android.library", version.ref = "agp" }
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
-[bundles]
-
+org-jetbrains-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+org-jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose" }
+org-jetbrains-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+org-jetbrains-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+org-jetbrains-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+io-realm-kotlin = { id = "io.realm.kotlin", version.ref = "realm" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
