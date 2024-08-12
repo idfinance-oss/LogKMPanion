@@ -1,14 +1,12 @@
 name: Validate PR
 on:
-  push:
+  pull_request:
     branches:
-      - '**'
+      - 'master'
 jobs:
   build_project:
-#    if: startsWith(github.head_ref, 'renovate')
     runs-on: macos-latest
     env:
-      GITHUB_USER: ${{ secrets.USER }}
       GITHUB_API_KEY: ${{ secrets.PAT }}
       ORG_GRADLE_PROJECT_mavenCentralUsername: ${{secrets.SONATYPE_NEXUS_USERNAME}}
       ORG_GRADLE_PROJECT_mavenCentralPassword: ${{secrets.SONATYPE_NEXUS_PASSWORD}}
@@ -27,6 +25,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Set version
+        run: |
+          VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+          major=$(echo $VERSION | cut -d'.' -f1)
+          minor=$(echo $VERSION | cut -d'.' -f2)
+          fix=$(echo $VERSION | cut -d'.' -f3)
+          echo "LIBRARY_VERSION=$major.$minor.$(($fix + 1))-SNAPSHOT-BUILD-${{ github.run_id }}" >> "$GITHUB_ENV"
 
       - name: Build
         run: |
