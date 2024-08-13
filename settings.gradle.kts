@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DebugView"
+rootProject.name = "LogKMPanion"
 include(":app", ":logkmpanion", ":logkmpanion-no-impl")

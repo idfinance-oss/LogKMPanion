@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.multiplatform)
@@ -94,4 +96,12 @@ publishing {
             }
         }
     }
+}
+
+mavenPublishing {
+    publishToMavenCentral(
+        host = SonatypeHost.CENTRAL_PORTAL,
+        automaticRelease = System.getenv("AUTO_PUBLISH") == "true"
+    )
+    signAllPublications()
 }

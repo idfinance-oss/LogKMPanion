@@ -13,6 +13,7 @@ jobs:
       ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{secrets.SIGNING_KEY_ID}}
       ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{secrets.SIGNING_PASSWORD}}
       GITHUB_API_KEY: ${{ secrets.PAT }}
+      AUTO_PUBLISH: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7

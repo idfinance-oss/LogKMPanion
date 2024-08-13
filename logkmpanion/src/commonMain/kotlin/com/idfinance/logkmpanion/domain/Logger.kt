@@ -18,7 +18,7 @@ private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
     throwable.printStackTrace()
 }
 
-fun handleLog(type: LogType, tag: String, message: String) {
+fun addToLogKMPanion(type: LogType, tag: String, message: String) {
     val useCase = ServiceLocator.saveLogUseCase
     coroutineScope.launch(exceptionHandler) {
         useCase(
