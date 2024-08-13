@@ -15,10 +15,11 @@ group = "io.github.idfinance-oss"
 version = System.getenv("LIBRARY_VERSION") ?: libs.versions.pluginVersion.get()
 
 kotlin {
-    androidTarget { publishLibraryVariants("release", "debug") }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    androidTarget { publishLibraryVariants("debug") }
+//    androidTarget { publishLibraryVariants("release", "debug") }
+//    iosX64()
+//    iosArm64()
+//    iosSimulatorArm64()
     applyDefaultHierarchyTemplate()
 
     jvmToolchain(17)
