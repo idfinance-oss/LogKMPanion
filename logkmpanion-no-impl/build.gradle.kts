@@ -49,7 +49,7 @@ publishing {
         pom {
             name.set("LogKMPanion-no-impl")
             description.set("This Kotlin Multiplatform library is designed to help you observe and manage application logs across Android and iOS platforms. This is module with empty implementation")
-            url.set("https://github.com/idfmoneyman-mx/kmm-debug-view")
+            url.set("https://github.com/idfinance-oss/LogKMPanion")
 
             licenses {
                 license {
@@ -68,9 +68,9 @@ publishing {
             }
 
             scm {
-                url.set("https://github.com/idfmoneyman-mx/kmm-debug-view")
-                connection.set("scm:git:git://github.com/idfmoneyman-mx/kmm-debug-view.git")
-                developerConnection.set("scm:git:git://github.com/idfmoneyman-mx/kmm-debug-view.git")
+                url.set("https://github.com/idfinance-oss/LogKMPanion")
+                connection.set("scm:git:git://github.com/idfinance-oss/LogKMPanion.git")
+                developerConnection.set("scm:git:git://github.com/idfinance-oss/LogKMPanion.git")
             }
         }
     }
