@@ -20,7 +20,7 @@ request logs effortlessly.
 1) Add the dependency
 
 ```kotlin
-implementation(io.github.idfinance-oss:logkmpanion:$version)
+implementation("io.github.idfinance-oss:logkmpanion:$version")
 ```
 
 2) To save log call
@@ -85,5 +85,5 @@ interface (package name and method class names) as `logkmpanion` module.
 So, u can implement `logkmpanion` module in debug builds and use `logkmpanion-no-impl` in release mode
 
 ```kotlin
-implementation(io.github.idfinance-oss:logkmpanion-no-impl:$version)
+implementation("io.github.idfinance-oss:logkmpanion-no-impl:$version")
 ```
