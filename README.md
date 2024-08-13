@@ -1,5 +1,7 @@
 # LogKMPanion
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.idfinance-oss/logkmpanion/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.idfinance-oss/logkmpanion)
+
 Welcome to **LogKMPanion**!
 This Kotlin Multiplatform library is designed to help you observe and manage application logs
 across Android and iOS platforms.
@@ -15,7 +17,12 @@ request logs effortlessly.
 
 ## How to integrate?
 
-1) Add the dependency (`com.idfinance.kmm:logkmpanion`)
+1) Add the dependency
+
+```kotlin
+implementation(io.github.idfinance-oss:logkmpanion:$version)
+```
+
 2) To save log call
 
 ```Kotlin
@@ -76,3 +83,7 @@ This project utilizes the following technologies:
 The library also provides empty implementation (`logkmpanion-no-impl` module) with the same
 interface (package name and method class names) as `logkmpanion` module.
 So, u can implement `logkmpanion` module in debug builds and use `logkmpanion-no-impl` in release mode
+
+```kotlin
+implementation(io.github.idfinance-oss:logkmpanion-no-impl:$version)
+```

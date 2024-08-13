@@ -13,6 +13,7 @@ jobs:
       ORG_GRADLE_PROJECT_signingInMemoryKey: ${{secrets.SIGNING_SECRET_KEY_RING}}
       ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{secrets.SIGNING_KEY_ID}}
       ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{secrets.SIGNING_PASSWORD}}
+      AUTO_PUBLISH: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1

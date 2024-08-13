@@ -99,6 +99,9 @@ publishing {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral(
+        host = SonatypeHost.CENTRAL_PORTAL,
+        automaticRelease = System.getenv("AUTO_PUBLISH") == "true"
+    )
     signAllPublications()
 }
