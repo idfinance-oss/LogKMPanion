@@ -1,6 +1,6 @@
 # LogKMPanion
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.idfinance-oss/logkmpanion/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.idfinance-oss/logkmpanion)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.idfinance-oss/logkmpanion)](https://img.shields.io/maven-central/v/io.github.idfinance-oss/logkmpanion)
 
 Welcome to **LogKMPanion**!
 This Kotlin Multiplatform library is designed to help you observe and manage application logs
