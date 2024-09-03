@@ -17,7 +17,7 @@ internal val requestStartKey = AttributeKey<Long>("RequestStart")
 
 private fun getRequestId() = uuid4().toString()
 
-fun debugViewNetworkPlugin(sessionId: String = uuid4().toString()) =
+fun logKMPanionNetworkPlugin(sessionId: String = uuid4().toString()) =
     createClientPlugin("DebugViewNetworkPlugin") {
         client.sendPipeline.intercept(HttpSendPipeline.Monitoring) {
             val requestId = getRequestId()

@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.lifecycle.lifecycleScope
-import com.idfinance.logkmpanion.data.network.debugViewNetworkPlugin
+import com.idfinance.logkmpanion.data.network.logKMPanionNetworkPlugin
 import com.idfinance.logkmpanion.domain.LogType
-import com.idfinance.logkmpanion.domain.handleLog
+import com.idfinance.logkmpanion.domain.addToLogKMPanion
 import com.idfinance.logkmpanion.presentation.component.openLogKMPanion
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     private val httpClient by lazy {
-        HttpClient { install(debugViewNetworkPlugin()) }
+        HttpClient { install(logKMPanionNetworkPlugin()) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Column {
                 Button(onClick = {
-                    repeat(100) { handleLog(LogType.DEFAULT, "TAG", "message$it") }
+                    repeat(100) { addToLogKMPanion(LogType.DEFAULT, "TAG", "message$it") }
                     openLogKMPanion(applicationContext)
                 }) {
                     Text("Open debug view")
