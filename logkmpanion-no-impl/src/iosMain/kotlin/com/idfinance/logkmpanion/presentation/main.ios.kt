@@ -1,4 +1,4 @@
-package com.idfinance.logkmpanion.presentation.ui
+package com.idfinance.logkmpanion.presentation
 
 import platform.UIKit.UIViewController
 
