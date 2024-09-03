@@ -1,4 +1,4 @@
-package com.idfinance.logkmpanion
+package com.idfinance.logkmpanion.presentation.component
 
 import android.content.Context
 
