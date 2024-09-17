@@ -110,7 +110,11 @@ internal fun NetworkLogsView(component: NetworkLogsComponent) {
 
         val networkLogDetailsComponent = modal.child?.instance as? NetworkLogDetailsComponent
         networkLogDetailsComponent?.let {
-            ModalBottomSheet(networkLogDetailsComponent::onDismiss, sheetState = bottomSheetState) {
+            ModalBottomSheet(
+                networkLogDetailsComponent::onDismiss,
+                sheetState = bottomSheetState,
+                modifier = Modifier.padding(top = 80.dp),
+            ) {
                 NetworkLogDetailsView(networkLogDetailsComponent)
             }
         }

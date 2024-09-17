@@ -39,7 +39,8 @@ fun addToLogKMPanion(type: LogType, tag: String, message: String)
 
     - In iOS
 
-        1) get the ViewController instance
+        1) add "<key>CADisableMinimumFrameDurationOnPhone</key><true/>" to project info.plist to fix the crash when opening the bottom sheet
+        2) get the ViewController instance
 
       ```Swift
       fun LogKMPanionViewControllerProvider(onClose: () -> Unit): UIViewController
