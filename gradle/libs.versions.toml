@@ -1,6 +1,6 @@
 [versions]
 pluginVersion = "1.1.0-test"
-agp = "8.5.2"
+agp = "8.7.1"
 decompose = "3.1.0"
 realm = "2.3.0"
 kotlin = "2.0.20"
