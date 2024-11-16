@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.TextUnit
@@ -32,6 +33,10 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+internal object AllLogsTestTags {
+    const val ROOT_VIEW = "all_logs_view"
+}
+
 @Composable
 internal fun AllLogsView(component: AllLogsComponent) {
     val model by component.model.subscribeAsState()
@@ -39,8 +44,15 @@ internal fun AllLogsView(component: AllLogsComponent) {
     LaunchedEffect(model.logs.size) {
         state.animateScrollToItem(maxOf(model.logs.size - 1, 0))
     }
-    Scaffold(floatingActionButton = { FloatingActionButtons(component) }) {
-        LazyColumn(state = state, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Scaffold(
+        modifier = Modifier.testTag(AllLogsTestTags.ROOT_VIEW),
+        floatingActionButton = { FloatingActionButtons(component) }
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(it),
+            state = state,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             itemsIndexed(model.logs) { index, it ->
                 Text(
                     getAttributedLog(it),

@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'logkmpanion_no_impl'
-    spec.version                  = '1.0.0-test'
+    spec.version                  = '1.1.0-test'
     spec.homepage                 = 'https://idfinance.com/'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''

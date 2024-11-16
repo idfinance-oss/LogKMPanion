@@ -1,4 +1,7 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.com.android.library)
@@ -15,7 +18,13 @@ group = "io.github.idfinance-oss"
 version = System.getenv("LIBRARY_VERSION") ?: libs.versions.pluginVersion.get()
 
 kotlin {
-    androidTarget { publishLibraryVariants("release", "debug") }
+    androidTarget {
+        publishLibraryVariants("release", "debug")
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        instrumentedTestVariant {
+            sourceSetTree = KotlinSourceSetTree.test
+        }
+    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -37,6 +46,14 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(libs.activity.compose)
+        }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+        androidInstrumentedTest.dependencies {
+            implementation(libs.ui.test.junit4.android)
         }
     }
 
@@ -63,6 +80,10 @@ android {
     compileSdk = 34
     defaultConfig {
         minSdk = 21
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    dependencies {
+        debugImplementation(libs.ui.test.manifest)
     }
 }
 

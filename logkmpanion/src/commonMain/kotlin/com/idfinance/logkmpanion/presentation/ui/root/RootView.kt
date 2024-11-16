@@ -19,11 +19,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.idfinance.logkmpanion.presentation.ui.theme.DebugViewTheme
 import com.idfinance.logkmpanion.presentation.ui.allLogs.AllLogsView
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.NetworkLogsView
+import com.idfinance.logkmpanion.presentation.ui.theme.DebugViewTheme
+
+internal object RootViewTestTags {
+    const val ROOT_VIEW = "root_view"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +37,11 @@ internal fun RootView(component: RootComponent) {
     val activeComponent = childStack.active.instance
 
     DebugViewTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Surface(
+            modifier = Modifier.fillMaxSize()
+                .testTag(RootViewTestTags.ROOT_VIEW),
+            color = MaterialTheme.colorScheme.background
+        ) {
             Scaffold(
                 topBar = {
                     TopAppBar(

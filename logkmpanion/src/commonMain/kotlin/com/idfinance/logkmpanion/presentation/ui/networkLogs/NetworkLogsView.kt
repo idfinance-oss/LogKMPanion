@@ -27,12 +27,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.details.NetworkLogDetailsComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.details.NetworkLogDetailsView
+
+internal object NetworkLogsTestTags {
+    const val ROOT_VIEW = "network_logs_view"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,8 +51,14 @@ internal fun NetworkLogsView(component: NetworkLogsComponent) {
         listState.animateScrollToItem(maxOf(model.logs.size - 1, 0))
     }
 
-    Scaffold(floatingActionButton = { FloatingActionButtons(component) }) {
-        LazyColumn(state = listState) {
+    Scaffold(
+        modifier = Modifier.testTag(NetworkLogsTestTags.ROOT_VIEW),
+        floatingActionButton = { FloatingActionButtons(component) }
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(it),
+            state = listState
+        ) {
             model.logs.forEach { groupedLogs ->
                 item {
                     Text(
