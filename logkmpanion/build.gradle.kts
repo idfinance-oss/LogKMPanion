@@ -53,6 +53,7 @@ kotlin {
             implementation(compose.uiTest)
         }
         androidInstrumentedTest.dependencies {
+            implementation(project.dependencies.platform(libs.compose.bom))
             implementation(libs.ui.test.junit4.android)
         }
     }
