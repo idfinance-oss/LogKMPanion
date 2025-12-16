@@ -10,7 +10,8 @@ import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private val coroutineScope by lazy(::MainScope)
 
@@ -18,6 +19,7 @@ private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
     throwable.printStackTrace()
 }
 
+@OptIn(ExperimentalTime::class)
 fun addToLogKMPanion(type: LogType, tag: String, message: String) {
     val useCase = ServiceLocator.saveLogUseCase
     coroutineScope.launch(exceptionHandler) {

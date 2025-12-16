@@ -1,15 +1,15 @@
 [versions]
 pluginVersion = "1.1.0-test"
-agp = "8.7.2"
+agp = "8.10.0"
 decompose = "3.2.2"
-realm = "3.0.0"
-kotlin = "2.0.21"
+realm = "3.2.8-2"
+kotlin = "2.2.0"
 core-ktx = "1.15.0"
 lifecycle-runtime-ktx = "2.8.7"
 activity-compose = "1.9.3"
 compose-bom = "2024.11.00"
-datetime = "0.6.1"
-ktor = "2.3.12"
+datetime = "0.7.1"
+ktor = "3.3.2"
 uuid = "0.8.4"
 jetbrains-compose = "1.7.0"
 maven-publish = "0.30.0"
@@ -19,7 +19,7 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 decomposeCompose = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
-realm = { module = "io.realm.kotlin:library-base", version.ref = "realm" }
+realm = { module = "com.infomaniak.realm.kotlin:library-base", version.ref = "realm" } # Realm Kotlin fork with support for Kotlin 2.2.x
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -40,5 +40,5 @@ org-jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains
 org-jetbrains-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 org-jetbrains-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 org-jetbrains-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
-io-realm-kotlin = { id = "io.realm.kotlin", version.ref = "realm" }
+io-realm-kotlin = { id = "com.infomaniak.realm.kotlin", version.ref = "realm" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
