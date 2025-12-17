@@ -38,7 +38,7 @@ kotlin {
 
 android {
     namespace = "com.idfinance.logkmpanion"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 21
     }

@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.idfinance.debugview"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.idfinance.debugview"

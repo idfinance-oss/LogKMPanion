@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.idfinance.logkmpanion.data.model.Log
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Composable
 internal fun AllLogsView(component: AllLogsComponent) {
@@ -75,6 +76,7 @@ private fun FloatingActionButtons(component: AllLogsComponent) {
     }
 }
 
+@OptIn(ExperimentalTime::class)
 @Composable
 private fun getAttributedLog(log: Log): AnnotatedString {
     val time = Instant.fromEpochMilliseconds(log.time)
