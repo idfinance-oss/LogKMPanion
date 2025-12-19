@@ -5,7 +5,6 @@ import com.idfinance.logkmpanion.domain.handleError
 import com.idfinance.logkmpanion.domain.handleResponse
 import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.request.HttpSendPipeline
-import io.ktor.client.statement.HttpResponsePipeline
 import io.ktor.client.statement.bodyAsText
 import io.ktor.util.AttributeKey
 import io.ktor.util.date.getTimeMillis
@@ -31,16 +30,15 @@ fun logKMPanionNetworkPlugin(sessionId: String = uuid4().toString()) =
             }
         }
 
-        client.responsePipeline.intercept(HttpResponsePipeline.Receive) {
-            val response = context.response
+        onResponse { response ->
             val request = response.call.request
             val uuid = request.attributes[requestIdKey]
             val requestStart = request.attributes[requestStartKey]
             val statusCode = response.status.value
-            val headers = response.headers.entries().map { "${it.key}=${it.value.joinToString()}" }
             val body = response.bodyAsText()
             val responseTime = response.responseTime
             val duration = responseTime.timestamp - requestStart
+            val headers = response.headers.entries().map { "${it.key}=${it.value.joinToString()}" }
 
             handleResponse(
                 uuid = uuid,
@@ -48,9 +46,7 @@ fun logKMPanionNetworkPlugin(sessionId: String = uuid4().toString()) =
                 headers = headers,
                 body = body,
                 responseTime = responseTime,
-                duration = duration,
+                duration = duration
             )
-
-            proceed()
         }
     }
