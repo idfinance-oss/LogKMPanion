@@ -6,6 +6,7 @@ import com.idfinance.logkmpanion.domain.handleResponse
 import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.request.HttpSendPipeline
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.contentType
 import io.ktor.util.AttributeKey
 import io.ktor.util.date.getTimeMillis
 
@@ -35,10 +36,24 @@ fun logKMPanionNetworkPlugin(sessionId: String = uuid4().toString()) =
             val uuid = request.attributes[requestIdKey]
             val requestStart = request.attributes[requestStartKey]
             val statusCode = response.status.value
-            val body = response.bodyAsText()
             val responseTime = response.responseTime
             val duration = responseTime.timestamp - requestStart
             val headers = response.headers.entries().map { "${it.key}=${it.value.joinToString()}" }
+
+            val contentType = response.contentType()
+            val body: String = when {
+                contentType == null -> "<no content-type>"
+
+                contentType.contentType == "application" &&
+                        contentType.contentSubtype.contains("json") ->
+                    response.bodyAsText()
+
+                else -> buildString {
+                    append("<binary skipped>")
+                    append(" type=").append(contentType)
+                }
+            }
+
 
             handleResponse(
                 uuid = uuid,
