@@ -4,9 +4,11 @@ import com.benasher44.uuid.uuid4
 import com.idfinance.logkmpanion.domain.handleError
 import com.idfinance.logkmpanion.domain.handleResponse
 import io.ktor.client.plugins.api.createClientPlugin
+import io.ktor.client.plugins.observer.ResponseHandler
+import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.client.request.HttpSendPipeline
 import io.ktor.client.statement.bodyAsText
-import io.ktor.http.contentType
+import io.ktor.client.statement.request
 import io.ktor.util.AttributeKey
 import io.ktor.util.date.getTimeMillis
 
@@ -31,37 +33,16 @@ fun logKMPanionNetworkPlugin(sessionId: String = uuid4().toString()) =
             }
         }
 
-        onResponse { response ->
-            val request = response.call.request
-            val uuid = request.attributes[requestIdKey]
-            val requestStart = request.attributes[requestStartKey]
+        val observer: ResponseHandler = observer@{ response ->
+            val uuid = response.request.attributes[requestIdKey]
+            val requestStart = response.request.attributes[requestStartKey]
             val statusCode = response.status.value
+            val body = response.bodyAsText()
             val responseTime = response.responseTime
             val duration = responseTime.timestamp - requestStart
             val headers = response.headers.entries().map { "${it.key}=${it.value.joinToString()}" }
-
-            val contentType = response.contentType()
-            val body: String = when {
-                contentType == null -> "<no content-type>"
-
-                contentType.contentType == "application" &&
-                        contentType.contentSubtype.contains("json") ->
-                    response.bodyAsText()
-
-                else -> buildString {
-                    append("<binary skipped>")
-                    append(" type=").append(contentType)
-                }
-            }
-
-
-            handleResponse(
-                uuid = uuid,
-                statusCode = statusCode,
-                headers = headers,
-                body = body,
-                responseTime = responseTime,
-                duration = duration
-            )
+            handleResponse(uuid, statusCode, headers, body, responseTime, duration)
         }
+
+        ResponseObserver.install(ResponseObserver.prepare { onResponse(observer) }, client)
     }
