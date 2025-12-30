@@ -11,7 +11,7 @@ compose-bom = "2024.11.00"
 datetime = "0.7.1"
 ktor = "3.3.2"
 uuid = "0.8.4"
-jetbrains-compose = "1.7.0"
+jetbrains-compose = "1.9.3"
 maven-publish = "0.30.0"
 
 [libraries]
