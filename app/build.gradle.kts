@@ -59,4 +59,5 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.ktor.client.core)
     implementation(libs.ktorClientHttp)
+    testImplementation("junit:junit:4.13.2")
 }
