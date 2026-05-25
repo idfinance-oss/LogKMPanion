@@ -17,6 +17,7 @@ import com.idfinance.logkmpanion.domain.usecase.SaveLogUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveRequestUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveResponseUseCase
 import com.idfinance.logkmpanion.presentation.ui.allLogs.DefaultAllLogsComponent
+import com.idfinance.logkmpanion.presentation.ui.allLogs.LogSharer
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.DefaultNetworkLogsComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.details.DefaultNetworkLogDetailsComponent
 import com.idfinance.logkmpanion.presentation.ui.root.DefaultRootComponent
@@ -24,6 +25,8 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
 internal object ServiceLocator {
+
+    internal var logSharer: LogSharer? = null
 
     val saveLogUseCase: SaveLogUseCase
         get() = SaveLogUseCase(repository)
@@ -41,7 +44,12 @@ internal object ServiceLocator {
         DefaultRootComponent(context, onClose)
 
     fun getAllLogsComponent(context: ComponentContext) =
-        DefaultAllLogsComponent(context, getAllLogsFlowUseCase, clearLogsUseCase)
+        DefaultAllLogsComponent(
+            context,
+            getAllLogsFlowUseCase,
+            clearLogsUseCase,
+            checkNotNull(logSharer) { "Set ServiceLocator.logSharer before opening LogKMPanion" },
+        )
 
     fun getNetworkLogsComponent(context: ComponentContext) =
         DefaultNetworkLogsComponent(context, getNetworkLogsFlowUseCase, clearNetworkLogsUseCase)

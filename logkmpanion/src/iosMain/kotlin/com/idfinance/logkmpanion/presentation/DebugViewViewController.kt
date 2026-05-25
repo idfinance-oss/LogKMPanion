@@ -5,6 +5,7 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.start
 import com.arkivanov.essenty.lifecycle.stop
 import com.idfinance.logkmpanion.ServiceLocator
+import com.idfinance.logkmpanion.presentation.ui.allLogs.LogSharerImpl
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIViewController
 import platform.UIKit.addChildViewController
@@ -18,8 +19,10 @@ fun LogKMPanionViewControllerProvider(onClose: () -> Unit): UIViewController =
 @OptIn(ExperimentalForeignApi::class)
 private class LogKMPanionViewController(onClose: () -> Unit) : UIViewController(null, null) {
     private val lifecycle = LifecycleRegistry()
-    private val component =
+    private val component = run {
+        ServiceLocator.logSharer = LogSharerImpl()
         ServiceLocator.getRootComponent(DefaultComponentContext(lifecycle), onClose)
+    }
     private val controller = ComposeDebugViewViewController(component)
 
     override fun viewDidLoad() {

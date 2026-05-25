@@ -11,3 +11,4 @@ local.properties
 .kotlin
 **/Pods
 **/Podfile.lock
+**/*.podspec
