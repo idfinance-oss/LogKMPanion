@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'master'
+      - '**version-update**'
 jobs:
   build_project:
     runs-on: macos-latest
