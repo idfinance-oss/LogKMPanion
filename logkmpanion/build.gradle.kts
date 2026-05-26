@@ -38,6 +38,9 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.activity.compose)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
     }
 
     cocoapods {

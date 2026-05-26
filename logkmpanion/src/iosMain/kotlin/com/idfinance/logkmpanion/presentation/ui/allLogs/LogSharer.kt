@@ -12,9 +12,9 @@ import platform.Foundation.NSURL
 import platform.Foundation.create
 import platform.Foundation.writeToFile
 import platform.UIKit.UIActivityViewController
-import platform.UIKit.UIApplication
+import platform.UIKit.UIViewController
 
-internal class LogSharerImpl : LogSharer {
+internal class LogSharerImpl(private val host: UIViewController) : LogSharer {
     @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
     override suspend fun shareAsFile(content: String, fileName: String) {
         val path = withContext(Dispatchers.Default) {
@@ -29,9 +29,7 @@ internal class LogSharerImpl : LogSharer {
         withContext(Dispatchers.Main) {
             val url = NSURL.fileURLWithPath(path)
             val vc = UIActivityViewController(activityItems = listOf(url), applicationActivities = null)
-            UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
-                vc, animated = true, completion = null,
-            )
+            host.presentViewController(vc, animated = true, completion = null)
         }
     }
 }

@@ -35,6 +35,9 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.idfinance.logkmpanion.data.model.Log
+import com.idfinance.logkmpanion.domain.LogType
+import com.idfinance.logkmpanion.domain.addToLogKMPanion
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -102,7 +105,17 @@ private suspend fun copyLogsAndNotify(
     snackbarHostState: SnackbarHostState,
     onShareConfirmed: () -> Unit,
 ) {
-    runCatching { clipboardManager.setText(AnnotatedString(payload.text)) }
+    try {
+        clipboardManager.setText(AnnotatedString(payload.text))
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Throwable) {
+        addToLogKMPanion(
+            type = LogType.ERROR,
+            tag = "LogKMPanion",
+            message = "Failed to copy logs to clipboard: ${e.message ?: e::class.simpleName}",
+        )
+    }
     if (payload.wasTruncated) {
         val result = snackbarHostState.showSnackbar(
             message = "Copied last 512 KB. Share full log as file?",

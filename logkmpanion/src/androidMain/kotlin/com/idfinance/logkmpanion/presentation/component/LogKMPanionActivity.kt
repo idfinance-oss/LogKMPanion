@@ -23,8 +23,11 @@ class LogKMPanionActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ServiceLocator.logSharer = LogSharerImpl(applicationContext)
-        val root = ServiceLocator.getRootComponent(defaultComponentContext(), this::finish)
+        val root = ServiceLocator.getRootComponent(
+            context = defaultComponentContext(),
+            logSharer = LogSharerImpl(applicationContext),
+            onClose = this::finish,
+        )
         setContent {
             RootView(root)
         }

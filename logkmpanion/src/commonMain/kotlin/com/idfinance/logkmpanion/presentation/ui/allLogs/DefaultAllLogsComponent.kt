@@ -10,12 +10,13 @@ import com.idfinance.logkmpanion.domain.addToLogKMPanion
 import com.idfinance.logkmpanion.domain.usecase.ClearLogsUseCase
 import com.idfinance.logkmpanion.domain.usecase.GetAllLogsFlowUseCase
 import com.idfinance.logkmpanion.presentation.extensions.disposableScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.withContext
 
 internal class DefaultAllLogsComponent(
     context: ComponentContext,
@@ -48,17 +49,18 @@ internal class DefaultAllLogsComponent(
         launch { clearLogsUseCase() }
     }
 
-    @OptIn(ExperimentalTime::class)
     override fun shareFullLog() {
         launch {
-            runCatching {
-                val timestamp = Clock.System.now().epochSeconds
-                logSharer.shareAsFile(_model.value.full, "logkmpanion-$timestamp.txt")
-            }.onFailure { error ->
+            try {
+                val content = withContext(Dispatchers.Default) { _model.value.full }
+                logSharer.shareAsFile(content, "logkmpanion-logs.txt")
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Throwable) {
                 addToLogKMPanion(
                     type = LogType.ERROR,
                     tag = "LogKMPanion",
-                    message = "Failed to share log file: ${error.message ?: error::class.simpleName}",
+                    message = "Failed to share log file: ${e.message ?: e::class.simpleName}",
                 )
             }
         }

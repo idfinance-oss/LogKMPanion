@@ -26,8 +26,6 @@ import io.realm.kotlin.RealmConfiguration
 
 internal object ServiceLocator {
 
-    internal var logSharer: LogSharer? = null
-
     val saveLogUseCase: SaveLogUseCase
         get() = SaveLogUseCase(repository)
 
@@ -40,15 +38,15 @@ internal object ServiceLocator {
     val saveErrorUseCase: SaveErrorUseCase
         get() = SaveErrorUseCase(repository)
 
-    fun getRootComponent(context: ComponentContext, onClose: () -> Unit) =
-        DefaultRootComponent(context, onClose)
+    fun getRootComponent(context: ComponentContext, logSharer: LogSharer, onClose: () -> Unit) =
+        DefaultRootComponent(context, logSharer, onClose)
 
-    fun getAllLogsComponent(context: ComponentContext) =
+    fun getAllLogsComponent(context: ComponentContext, logSharer: LogSharer) =
         DefaultAllLogsComponent(
             context,
             getAllLogsFlowUseCase,
             clearLogsUseCase,
-            checkNotNull(logSharer) { "Set ServiceLocator.logSharer before opening LogKMPanion" },
+            logSharer,
         )
 
     fun getNetworkLogsComponent(context: ComponentContext) =

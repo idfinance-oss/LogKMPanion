@@ -19,10 +19,11 @@ fun LogKMPanionViewControllerProvider(onClose: () -> Unit): UIViewController =
 @OptIn(ExperimentalForeignApi::class)
 private class LogKMPanionViewController(onClose: () -> Unit) : UIViewController(null, null) {
     private val lifecycle = LifecycleRegistry()
-    private val component = run {
-        ServiceLocator.logSharer = LogSharerImpl()
-        ServiceLocator.getRootComponent(DefaultComponentContext(lifecycle), onClose)
-    }
+    private val component = ServiceLocator.getRootComponent(
+        context = DefaultComponentContext(lifecycle),
+        logSharer = LogSharerImpl(this),
+        onClose = onClose,
+    )
     private val controller = ComposeDebugViewViewController(component)
 
     override fun viewDidLoad() {
