@@ -17,6 +17,7 @@ import com.idfinance.logkmpanion.domain.usecase.SaveLogUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveRequestUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveResponseUseCase
 import com.idfinance.logkmpanion.presentation.ui.allLogs.DefaultAllLogsComponent
+import com.idfinance.logkmpanion.presentation.ui.allLogs.LogSharer
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.DefaultNetworkLogsComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.details.DefaultNetworkLogDetailsComponent
 import com.idfinance.logkmpanion.presentation.ui.root.DefaultRootComponent
@@ -37,11 +38,16 @@ internal object ServiceLocator {
     val saveErrorUseCase: SaveErrorUseCase
         get() = SaveErrorUseCase(repository)
 
-    fun getRootComponent(context: ComponentContext, onClose: () -> Unit) =
-        DefaultRootComponent(context, onClose)
+    fun getRootComponent(context: ComponentContext, logSharer: LogSharer, onClose: () -> Unit) =
+        DefaultRootComponent(context, logSharer, onClose)
 
-    fun getAllLogsComponent(context: ComponentContext) =
-        DefaultAllLogsComponent(context, getAllLogsFlowUseCase, clearLogsUseCase)
+    fun getAllLogsComponent(context: ComponentContext, logSharer: LogSharer) =
+        DefaultAllLogsComponent(
+            context,
+            getAllLogsFlowUseCase,
+            clearLogsUseCase,
+            logSharer,
+        )
 
     fun getNetworkLogsComponent(context: ComponentContext) =
         DefaultNetworkLogsComponent(context, getNetworkLogsFlowUseCase, clearNetworkLogsUseCase)

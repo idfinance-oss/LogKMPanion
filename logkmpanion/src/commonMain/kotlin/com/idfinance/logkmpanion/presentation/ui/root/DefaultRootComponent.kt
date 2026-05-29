@@ -8,11 +8,13 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.idfinance.logkmpanion.ServiceLocator
 import com.idfinance.logkmpanion.presentation.extensions.disposableScope
+import com.idfinance.logkmpanion.presentation.ui.allLogs.LogSharer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.Serializable
 
 internal class DefaultRootComponent(
     context: ComponentContext,
+    private val logSharer: LogSharer,
     private val onClose: () -> Unit,
 ) : RootComponent,
     ComponentContext by context,
@@ -27,7 +29,7 @@ internal class DefaultRootComponent(
         childFactory = { config, context ->
             when (config) {
                 Config.AllLogs -> {
-                    val component = ServiceLocator.getAllLogsComponent(context)
+                    val component = ServiceLocator.getAllLogsComponent(context, logSharer)
                     RootComponent.Child.AllLogs(component)
                 }
 

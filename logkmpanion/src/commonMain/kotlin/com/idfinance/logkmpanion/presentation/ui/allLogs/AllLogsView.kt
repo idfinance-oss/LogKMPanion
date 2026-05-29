@@ -15,11 +15,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -28,6 +35,10 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.idfinance.logkmpanion.data.model.Log
+import com.idfinance.logkmpanion.domain.LogType
+import com.idfinance.logkmpanion.domain.addToLogKMPanion
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.ExperimentalTime
@@ -37,10 +48,14 @@ import kotlin.time.Instant
 internal fun AllLogsView(component: AllLogsComponent) {
     val model by component.model.subscribeAsState()
     val state = rememberLazyListState()
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(model.logs.size) {
         state.animateScrollToItem(maxOf(model.logs.size - 1, 0))
     }
-    Scaffold(floatingActionButton = { FloatingActionButtons(component) }) {
+    Scaffold(
+        floatingActionButton = { FloatingActionButtons(component, snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) {
         LazyColumn(state = state, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             itemsIndexed(model.logs) { index, it ->
                 Text(
@@ -61,18 +76,55 @@ internal fun AllLogsView(component: AllLogsComponent) {
 }
 
 @Composable
-private fun FloatingActionButtons(component: AllLogsComponent) {
+private fun FloatingActionButtons(component: AllLogsComponent, snackbarHostState: SnackbarHostState) {
     val model by component.model.subscribeAsState()
     val clipboardManager = LocalClipboardManager.current
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
+    val scope = rememberCoroutineScope()
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         FloatingActionButton(onClick = component::clearLogs) {
             Icon(Icons.Default.Delete, null)
         }
-        FloatingActionButton(onClick = { clipboardManager.setText(AnnotatedString(model.concatenatedLog)) }) {
+        FloatingActionButton(onClick = {
+            scope.launch {
+                copyLogsAndNotify(
+                    payload = model.clipboardPayload,
+                    clipboardManager = clipboardManager,
+                    snackbarHostState = snackbarHostState,
+                    onShareConfirmed = component::shareFullLog,
+                )
+            }
+        }) {
             Icon(Icons.Default.ContentCopy, null)
         }
+    }
+}
+
+private suspend fun copyLogsAndNotify(
+    payload: ClipboardPayload,
+    clipboardManager: ClipboardManager,
+    snackbarHostState: SnackbarHostState,
+    onShareConfirmed: () -> Unit,
+) {
+    try {
+        clipboardManager.setText(AnnotatedString(payload.text))
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Throwable) {
+        addToLogKMPanion(
+            type = LogType.ERROR,
+            tag = "LogKMPanion",
+            message = "Failed to copy logs to clipboard: ${e.message ?: e::class.simpleName}",
+        )
+    }
+    if (payload.wasTruncated) {
+        val result = snackbarHostState.showSnackbar(
+            message = "Copied last 512 KB. Share full log as file?",
+            actionLabel = "Share",
+            duration = SnackbarDuration.Long,
+        )
+        if (result == SnackbarResult.ActionPerformed) onShareConfirmed()
+    } else {
+        snackbarHostState.showSnackbar("Logs copied")
     }
 }
 
