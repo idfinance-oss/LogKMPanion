@@ -1,5 +1,5 @@
 [versions]
-pluginVersion = "1.1.0-test"
+pluginVersion = "1.15.0"
 agp = "8.10.0"
 decompose = "3.2.2"
 realm = "3.2.9"
