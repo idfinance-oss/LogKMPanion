@@ -3,7 +3,7 @@
     <application>
         <activity android:name=".presentation.component.LogKMPanionActivity" />
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name=".presentation.ui.allLogs.LogKMPanionFileProvider"
             android:authorities="${applicationId}.logkmpanion.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
