@@ -38,9 +38,20 @@ internal class DefaultEnvironmentComponent(
             currentJob = launch {
                 provider.current.collectLatest { current ->
                     _model.update {
+                        val isFirstEmission = it.selectedId == null
                         it.copy(
                             current = current,
                             selectedId = it.selectedId ?: current.id,
+                            /**
+                             * The applied host is the source of truth for an editable entry: the
+                             * [EnvironmentProvider.environments] template may still carry the value
+                             * the app was built with. Seeded once so typing is never overwritten.
+                             */
+                            customHost = if (isFirstEmission && current.isHostEditable) {
+                                current.host
+                            } else {
+                                it.customHost
+                            },
                         )
                     }
                 }

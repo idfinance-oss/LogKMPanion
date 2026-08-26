@@ -1,8 +1,10 @@
 package com.idfinance.logkmpanion.presentation.ui.environment
 
 import com.arkivanov.decompose.DefaultComponentContext
+import com.idfinance.logkmpanion.domain.environment.DebugEnvironment
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.start
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -34,6 +36,39 @@ class DefaultEnvironmentComponentTest {
         assertEquals("pr-1.example.com", model.customHost)
         assertNull(model.error)
         assertFalse(model.isApplying)
+    }
+
+    @Test
+    fun customHost_isSeededFromAppliedEnvironment_notFromTemplate() {
+        val provider = FakeEnvironmentProvider(
+            environments = listOf(
+                DebugEnvironment(id = "master", title = "Master", host = "master.example.com"),
+                DebugEnvironment(id = "custom", title = "Custom", host = "", isHostEditable = true),
+            ),
+            initialCurrent = DebugEnvironment(
+                id = "custom",
+                title = "Custom",
+                host = "pr-42.example.com",
+                isHostEditable = true,
+            ),
+        )
+
+        val model = component(provider).model.value
+
+        assertEquals("pr-42.example.com", model.customHost)
+        assertTrue(model.isCustomHostVisible)
+    }
+
+    @Test
+    fun laterEmission_doesNotOverwriteTypedHost() {
+        val provider = FakeEnvironmentProvider()
+        val component = component(provider)
+        component.selectEnvironment("custom")
+        component.changeCustomHost("pr-99.example.com")
+
+        provider.emitCurrent("custom")
+
+        assertEquals("pr-99.example.com", component.model.value.customHost)
     }
 
     @Test
@@ -129,6 +164,37 @@ class DefaultEnvironmentComponentTest {
 
         assertEquals("bad host", component.model.value.error)
         assertFalse(component.model.value.isApplying)
+    }
+
+    @Test
+    fun apply_staysApplying_untilProviderReturns() {
+        val gate = CompletableDeferred<Unit>()
+        val provider = FakeEnvironmentProvider(gate = gate)
+        val component = component(provider)
+        component.selectEnvironment("prod")
+
+        component.apply()
+
+        assertTrue(component.model.value.isApplying)
+        assertFalse(component.model.value.isApplyEnabled)
+
+        gate.complete(Unit)
+
+        assertFalse(component.model.value.isApplying)
+    }
+
+    @Test
+    fun apply_isIgnored_whileAnotherApplyIsInFlight() {
+        val gate = CompletableDeferred<Unit>()
+        val provider = FakeEnvironmentProvider(gate = gate)
+        val component = component(provider)
+        component.selectEnvironment("prod")
+        component.apply()
+
+        component.apply()
+
+        assertEquals(1, provider.selectCalls.size)
+        gate.complete(Unit)
     }
 
     @Test

@@ -18,20 +18,22 @@ import com.idfinance.logkmpanion.domain.usecase.SaveLogUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveRequestUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveResponseUseCase
 import com.idfinance.logkmpanion.presentation.ui.allLogs.DefaultAllLogsComponent
-import com.idfinance.logkmpanion.presentation.ui.environment.DefaultEnvironmentComponent
 import com.idfinance.logkmpanion.presentation.ui.allLogs.LogSharer
+import com.idfinance.logkmpanion.presentation.ui.environment.DefaultEnvironmentComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.DefaultNetworkLogsComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.details.DefaultNetworkLogDetailsComponent
 import com.idfinance.logkmpanion.presentation.ui.root.DefaultRootComponent
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
+import kotlin.concurrent.Volatile
 
 internal object ServiceLocator {
 
     /**
-     * Set once during app startup through [LogKMPanion.setEnvironmentProvider] and read from the
-     * main thread when the panel is built, so it needs no synchronization.
+     * Registered through [LogKMPanion.setEnvironmentProvider]. Volatile because nothing stops a host
+     * app from building its DI graph off the main thread, while the panel reads this when it opens.
      */
+    @Volatile
     var environmentProvider: EnvironmentProvider? = null
 
     val isEnvironmentAvailable: Boolean

@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.Flow
  * @param host host of this environment, e.g. `my-app-master.example.com`.
  * @param isHostEditable when `true` the panel renders an editable host field for this entry
  * and passes the entered value to [EnvironmentProvider.select]. Meant for ad-hoc environments
- * such as per-PR review hosts.
+ * such as per-PR review hosts. At most one entry may be editable: the panel keeps a single
+ * host draft, so a second editable entry would share it.
  */
 data class DebugEnvironment(
     val id: String,
