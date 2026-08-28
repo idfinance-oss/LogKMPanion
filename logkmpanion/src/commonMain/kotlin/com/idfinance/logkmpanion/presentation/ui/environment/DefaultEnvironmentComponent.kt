@@ -42,11 +42,6 @@ internal class DefaultEnvironmentComponent(
                         it.copy(
                             current = current,
                             selectedId = it.selectedId ?: current.id,
-                            /**
-                             * The applied host is the source of truth for an editable entry: the
-                             * [EnvironmentProvider.environments] template may still carry the value
-                             * the app was built with. Seeded once so typing is never overwritten.
-                             */
                             customHost = if (isFirstEmission && current.isHostEditable) {
                                 current.host
                             } else {
@@ -87,10 +82,6 @@ internal class DefaultEnvironmentComponent(
             } catch (e: Throwable) {
                 _model.update { it.copy(error = e.message ?: e::class.simpleName) }
             } finally {
-                /**
-                 * Never runs when the host app kills the process inside [EnvironmentProvider.select]
-                 * to rebuild its network stack, which is the expected outcome for most apps.
-                 */
                 _model.update { it.copy(isApplying = false) }
             }
         }

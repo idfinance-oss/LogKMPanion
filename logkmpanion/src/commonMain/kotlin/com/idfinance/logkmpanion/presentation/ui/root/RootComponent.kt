@@ -9,7 +9,6 @@ import com.idfinance.logkmpanion.presentation.ui.networkLogs.NetworkLogsComponen
 internal interface RootComponent {
     val childStack: Value<ChildStack<*, Child>>
 
-    /** `false` while the host app registers no environment provider; the tab is then hidden. */
     val isEnvironmentAvailable: Boolean
 
     fun close()

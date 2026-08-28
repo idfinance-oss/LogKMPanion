@@ -1,13 +1,3 @@
-# TODO: this sample app is stale and does not build. It was left behind by the
-# DebugView -> LogKMPanion rename and needs three fixes:
-#   - the pod below points at ../debug-view, the module is ../logkmpanion
-#   - the Swift sources import `DebugView`, the framework baseName is `LogKMPanion`
-#   - DebugViewView.swift calls DebugViewViewControllerKt.DebugViewViewControllerProvider,
-#     the exported function is LogKMPanionViewControllerProvider
-# Until it is repaired the sample cannot demonstrate the Environment tab either: an
-# EnvironmentProvider cannot be implemented in Swift, since `current: Flow` requires
-# constructing a Kotlin Flow. The Android sample in app/ covers the feature meanwhile.
-
 platform :ios, '12.0'
 
 target 'iosApp' do

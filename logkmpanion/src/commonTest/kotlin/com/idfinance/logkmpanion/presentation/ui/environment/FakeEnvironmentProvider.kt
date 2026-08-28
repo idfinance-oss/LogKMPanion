@@ -15,7 +15,6 @@ internal val TEST_ENVIRONMENTS = listOf(
 internal class FakeEnvironmentProvider(
     override val environments: List<DebugEnvironment> = TEST_ENVIRONMENTS,
     private val failure: Throwable? = null,
-    /** When set, [select] suspends on it, so a test can observe the in-flight state. */
     private val gate: CompletableDeferred<Unit>? = null,
     initialCurrent: DebugEnvironment? = null,
 ) : EnvironmentProvider {

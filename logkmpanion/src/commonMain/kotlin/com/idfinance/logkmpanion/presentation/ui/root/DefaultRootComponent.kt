@@ -43,10 +43,6 @@ internal class DefaultRootComponent(
                     if (component != null) {
                         RootComponent.Child.Environment(component)
                     } else {
-                        /**
-                         * The config can outlive the provider when the stack is restored after
-                         * process death before the app registered one.
-                         */
                         val fallback = ServiceLocator.getAllLogsComponent(context, logSharer)
                         RootComponent.Child.AllLogs(fallback)
                     }

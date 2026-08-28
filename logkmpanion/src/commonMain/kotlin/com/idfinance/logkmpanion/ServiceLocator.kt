@@ -29,10 +29,6 @@ import kotlin.concurrent.Volatile
 
 internal object ServiceLocator {
 
-    /**
-     * Registered through [LogKMPanion.setEnvironmentProvider]. Volatile because nothing stops a host
-     * app from building its DI graph off the main thread, while the panel reads this when it opens.
-     */
     @Volatile
     var environmentProvider: EnvironmentProvider? = null
 
