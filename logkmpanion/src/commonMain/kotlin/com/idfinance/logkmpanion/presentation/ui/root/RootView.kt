@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.NetworkCheck
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.idfinance.logkmpanion.presentation.ui.theme.DebugViewTheme
 import com.idfinance.logkmpanion.presentation.ui.allLogs.AllLogsView
+import com.idfinance.logkmpanion.presentation.ui.environment.EnvironmentView
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.NetworkLogsView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,6 +60,14 @@ internal fun RootView(component: RootComponent) {
                             icon = { Icon(Icons.Default.NetworkCheck, null) },
                             label = { Text("Network logs") }
                         )
+                        if (component.isEnvironmentAvailable) {
+                            NavigationBarItem(
+                                selected = activeComponent is RootComponent.Child.Environment,
+                                onClick = component::openEnvironment,
+                                icon = { Icon(Icons.Default.Dns, null) },
+                                label = { Text("Environment") }
+                            )
+                        }
                     }
                 }
             ) {
@@ -65,6 +75,7 @@ internal fun RootView(component: RootComponent) {
                     when (val child = it.instance) {
                         is RootComponent.Child.AllLogs -> AllLogsView(child.component)
                         is RootComponent.Child.NetworkLogs -> NetworkLogsView(child.component)
+                        is RootComponent.Child.Environment -> EnvironmentView(child.component)
                     }
                 }
             }

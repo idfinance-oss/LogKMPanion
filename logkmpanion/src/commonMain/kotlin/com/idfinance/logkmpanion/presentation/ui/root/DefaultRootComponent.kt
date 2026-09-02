@@ -37,11 +37,23 @@ internal class DefaultRootComponent(
                     val component = ServiceLocator.getNetworkLogsComponent(context)
                     RootComponent.Child.NetworkLogs(component)
                 }
+
+                Config.Environment -> {
+                    val component = ServiceLocator.getEnvironmentComponent(context)
+                    if (component != null) {
+                        RootComponent.Child.Environment(component)
+                    } else {
+                        val fallback = ServiceLocator.getAllLogsComponent(context, logSharer)
+                        RootComponent.Child.AllLogs(fallback)
+                    }
+                }
             }
         }
     )
 
     override val childStack: Value<ChildStack<*, RootComponent.Child>> = stack
+
+    override val isEnvironmentAvailable: Boolean = ServiceLocator.isEnvironmentAvailable
 
     override fun close() {
         onClose()
@@ -55,6 +67,10 @@ internal class DefaultRootComponent(
         navigation.replaceAll(Config.NetworkLogs)
     }
 
+    override fun openEnvironment() {
+        navigation.replaceAll(Config.Environment)
+    }
+
     @Serializable
     private sealed interface Config {
         @Serializable
@@ -62,5 +78,8 @@ internal class DefaultRootComponent(
 
         @Serializable
         data object NetworkLogs : Config
+
+        @Serializable
+        data object Environment : Config
     }
 }

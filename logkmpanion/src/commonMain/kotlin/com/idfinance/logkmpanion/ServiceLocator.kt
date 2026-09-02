@@ -6,6 +6,7 @@ import com.idfinance.logkmpanion.data.model.NetworkRequest
 import com.idfinance.logkmpanion.data.model.Request
 import com.idfinance.logkmpanion.data.model.Response
 import com.idfinance.logkmpanion.data.model.Session
+import com.idfinance.logkmpanion.domain.environment.EnvironmentProvider
 import com.idfinance.logkmpanion.domain.repository.LogRepository
 import com.idfinance.logkmpanion.domain.usecase.ClearLogsUseCase
 import com.idfinance.logkmpanion.domain.usecase.ClearNetworkLogsUseCase
@@ -18,13 +19,21 @@ import com.idfinance.logkmpanion.domain.usecase.SaveRequestUseCase
 import com.idfinance.logkmpanion.domain.usecase.SaveResponseUseCase
 import com.idfinance.logkmpanion.presentation.ui.allLogs.DefaultAllLogsComponent
 import com.idfinance.logkmpanion.presentation.ui.allLogs.LogSharer
+import com.idfinance.logkmpanion.presentation.ui.environment.DefaultEnvironmentComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.DefaultNetworkLogsComponent
 import com.idfinance.logkmpanion.presentation.ui.networkLogs.details.DefaultNetworkLogDetailsComponent
 import com.idfinance.logkmpanion.presentation.ui.root.DefaultRootComponent
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
+import kotlin.concurrent.Volatile
 
 internal object ServiceLocator {
+
+    @Volatile
+    var environmentProvider: EnvironmentProvider? = null
+
+    val isEnvironmentAvailable: Boolean
+        get() = environmentProvider != null
 
     val saveLogUseCase: SaveLogUseCase
         get() = SaveLogUseCase(repository)
@@ -48,6 +57,9 @@ internal object ServiceLocator {
             clearLogsUseCase,
             logSharer,
         )
+
+    fun getEnvironmentComponent(context: ComponentContext) =
+        environmentProvider?.let { DefaultEnvironmentComponent(context, it) }
 
     fun getNetworkLogsComponent(context: ComponentContext) =
         DefaultNetworkLogsComponent(context, getNetworkLogsFlowUseCase, clearNetworkLogsUseCase)

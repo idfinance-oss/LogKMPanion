@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.lifecycle.lifecycleScope
+import com.idfinance.logkmpanion.LogKMPanion
 import com.idfinance.logkmpanion.data.network.logKMPanionNetworkPlugin
 import com.idfinance.logkmpanion.domain.LogType
 import com.idfinance.logkmpanion.domain.addToLogKMPanion
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LogKMPanion.setEnvironmentProvider(SampleEnvironmentProvider)
         setContent {
             Column {
                 Button(onClick = {
