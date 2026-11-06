@@ -51,7 +51,6 @@ kotlin {
 val checkApiParity by tasks.registering {
     val noImplSources = file("src")
     val fullSources = rootProject.file("logkmpanion/src")
-    inputs.dir(noImplSources)
     doLast {
         val missing = noImplSources.walkTopDown()
             .filter { it.isFile && it.extension == "kt" }

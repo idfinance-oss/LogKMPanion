@@ -21,9 +21,12 @@ class PublicApiContractTest {
     private suspend fun callEveryCommonApi(provider: EnvironmentProvider): Flow<DebugEnvironment> {
         addToLogKMPanion(type = LogType.ERROR, tag = "tag", message = "message")
         logKMPanionNetworkPlugin(sessionId = "session")
+        logKMPanionNetworkPlugin()
         LogKMPanion.setEnvironmentProvider(provider = ContractEnvironmentProvider())
         provider.select(id = provider.environments.first().id, host = null)
+        provider.select(id = "id")
         DebugEnvironment(id = "id", title = "title", host = "host", isHostEditable = true)
+        DebugEnvironment(id = "id", title = "title", host = "host").copy(host = "other")
         return provider.current
     }
 

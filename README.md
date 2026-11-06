@@ -132,10 +132,11 @@ So, u can implement `logkmpanion` module in debug builds and use `logkmpanion-no
 written by the app still compiles in release builds, where `setEnvironmentProvider` does nothing.
 Each declaration lives in a file with the same name in both modules, so the generated `LoggerKt`,
 `DebugViewViewControllerKt` and other file classes, which Swift and the compiled JVM code refer to,
-match as well. `./gradlew check` enforces this: the tests in `api-contract/` call every public API
-with named arguments against both modules, and `checkApiParity` fails when a `logkmpanion-no-impl`
-file has no counterpart at the same path in `logkmpanion`. A public API added to `logkmpanion`
-goes to `logkmpanion-no-impl` and to `api-contract/` in the same change.
+match as well. `./gradlew check` enforces this: the tests in `api-contract/` call the API listed
+there with named arguments against both modules, and `checkApiParity` fails when a
+`logkmpanion-no-impl` file has no counterpart at the same path in `logkmpanion`. A public API added
+to `logkmpanion` goes to `logkmpanion-no-impl` and to `api-contract/` in the same change; nothing
+checks that direction automatically.
 
 ```kotlin
 implementation("io.github.idfinance-oss:logkmpanion-no-impl:$version")
