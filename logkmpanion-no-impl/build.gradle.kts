@@ -23,6 +23,18 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.ktor.client.core)
         }
+        commonTest {
+            kotlin.srcDir(rootProject.file("api-contract/src/commonTest/kotlin"))
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+        androidUnitTest {
+            kotlin.srcDir(rootProject.file("api-contract/src/androidUnitTest/kotlin"))
+        }
+        iosTest {
+            kotlin.srcDir(rootProject.file("api-contract/src/iosTest/kotlin"))
+        }
     }
 
     cocoapods {
@@ -31,9 +43,30 @@ kotlin {
         homepage = "https://idfinance.com/"
 
         framework {
-            baseName = "DebugViewNoImpl"
+            baseName = "LogKMPanion"
         }
     }
+}
+
+val checkApiParity by tasks.registering {
+    val noImplSources = file("src")
+    val fullSources = rootProject.file("logkmpanion/src")
+    doLast {
+        val missing = noImplSources.walkTopDown()
+            .filter { it.isFile && it.extension == "kt" }
+            .map { it.relativeTo(noImplSources) }
+            .filterNot { fullSources.resolve(it).isFile }
+            .toList()
+        if (missing.isNotEmpty()) {
+            throw GradleException(
+                "logkmpanion-no-impl files without a counterpart at the same path in logkmpanion: $missing"
+            )
+        }
+    }
+}
+
+tasks.named("check") {
+    dependsOn(checkApiParity)
 }
 
 android {

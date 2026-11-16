@@ -38,8 +38,17 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.activity.compose)
         }
-        commonTest.dependencies {
-            implementation(kotlin("test"))
+        commonTest {
+            kotlin.srcDir(rootProject.file("api-contract/src/commonTest/kotlin"))
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+        androidUnitTest {
+            kotlin.srcDir(rootProject.file("api-contract/src/androidUnitTest/kotlin"))
+        }
+        iosTest {
+            kotlin.srcDir(rootProject.file("api-contract/src/iosTest/kotlin"))
         }
     }
 

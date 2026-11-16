@@ -16,6 +16,6 @@ tasks.register("buildAndPublish", DefaultTask::class) {
     dependsOn(":logkmpanion:publish")
     dependsOn(":logkmpanion-no-impl:build")
     dependsOn(":logkmpanion-no-impl:publish")
-    tasks.findByPath(":logkmpanion:publish")?.mustRunAfter(":logkmpanion:build")
-    tasks.findByPath(":logkmpanion-no-impl:publish")?.mustRunAfter(":logkmpanion-no-impl:build")
+    tasks.findByPath(":logkmpanion:publish")?.mustRunAfter(":logkmpanion:build", ":logkmpanion-no-impl:build")
+    tasks.findByPath(":logkmpanion-no-impl:publish")?.mustRunAfter(":logkmpanion:build", ":logkmpanion-no-impl:build")
 }
